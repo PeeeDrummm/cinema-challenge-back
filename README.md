@@ -30,7 +30,6 @@ A RESTful API for a cinema ticket booking system built with Node.js, Express, an
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd cinema-app
 ```
 
 2. Install dependencies:
@@ -43,8 +42,6 @@ Create a `.env` file in the root directory with the following variables:
 ```
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/cinema-app
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRATION=1d
 ```
 
 ## Running the Application
@@ -61,6 +58,13 @@ npm run dev
 2. Seed the database with sample data:
 ```bash
 npm run seed
+```
+
+3. Seed the database with more data (auxiliary scripts):
+```bash
+node src/utils/seedData.js
+node src/utils/seedMoreMovies.js
+node src/utils/seedSessions.js
 ```
 
 ## API Endpoints
