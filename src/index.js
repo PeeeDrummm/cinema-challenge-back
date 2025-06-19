@@ -25,6 +25,14 @@ app.get('/', (req, res) => {
   });
 });
 
+// Handle Socket.IO requests with a catch-all handler (prevent 404 errors)
+app.use('/socket.io', (req, res) => {
+  res.status(200).json({
+    message: 'Socket.IO not available',
+    note: 'This API does not support WebSocket connections'
+  });
+});
+
 // Initialize Swagger documentation
 swaggerDocs(app);
 

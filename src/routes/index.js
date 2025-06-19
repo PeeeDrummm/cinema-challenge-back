@@ -9,6 +9,26 @@ const reservationRoutes = require('./reservationRoutes');
 const router = express.Router();
 
 /**
+ * Root API route - provides basic API information
+ */
+router.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Cinema App API v1',
+    version: '1.0.0',
+    endpoints: {
+      auth: '/auth',
+      users: '/users',
+      movies: '/movies',
+      theaters: '/theaters',
+      sessions: '/sessions',
+      reservations: '/reservations'
+    },
+    documentation: '/docs'
+  });
+});
+
+/**
  * API Routes
  */
 router.use('/auth', authRoutes);

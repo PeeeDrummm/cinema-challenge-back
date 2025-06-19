@@ -5,6 +5,20 @@
  * @param {Function} next - Express next middleware function
  */
 exports.notFound = (req, res, next) => {
+  // List of paths that are common for preflight checks
+  const prefightPaths = ['/api/v1/auth/register', '/api/v1/auth/login'];
+  
+  // Skip logging for common preflight route checks 
+  // These routes will be properly accessed when user tries to login/register
+  if (prefightPaths.includes(req.originalUrl)) {
+    res.status(404).json({
+      success: false,
+      message: 'Route exists but is currently inactive'
+    });
+    return;
+  }
+  
+  // Normal 404 error handling for other routes
   const error = new Error(`Not Found - ${req.originalUrl}`);
   res.status(404);
   next(error);
