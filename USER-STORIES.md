@@ -1,7 +1,7 @@
 # Histórias de Usuário do Cinema App
 
 ## Introdução
-Este documento contém histórias de usuário principais para a aplicação Cinema App, focando nas funcionalidades implementadas para testes.
+Este documento contém histórias de usuário principais para a aplicação Cinema App, focando nas funcionalidades implementadas para teste de QA.
 
 ## Papéis de Usuário
 - **Visitante**: Usuário não autenticado
@@ -42,16 +42,33 @@ Este documento contém histórias de usuário principais para a aplicação Cine
 - Após o logout, rotas protegidas não são mais acessíveis
 - Token JWT é removido do localStorage
 
-### US-AUTH-004: Visualizar Perfil do Usuário
+### US-AUTH-004: Visualizar e Gerenciar Perfil do Usuário
 **Como** usuário logado  
-**Eu quero** visualizar minhas informações de perfil  
-**Para que** eu possa verificar os detalhes da minha conta  
+**Eu quero** visualizar e atualizar minhas informações de perfil  
+**Para que** eu possa manter meus dados atualizados  
 
 **Critérios de Aceitação:**
 - Perfil exibe nome do usuário, e-mail e função da conta
-- Opção para editar perfil está disponível
+- Usuário pode editar seu nome completo
+- Sistema indica visualmente os campos que foram alterados
+- Sistema confirma sucesso após salvar alterações
+- Interface exibe mensagem de confirmação após atualização bem-sucedida
+- Página de perfil é separada da página de reservas para melhor organização
 
 ## Histórias de Gerenciamento de Filmes
+
+### US-HOME-001: Página Inicial Atrativa
+**Como** usuário (visitante ou autenticado)  
+**Eu quero** ter uma visão geral e atrativa da aplicação ao entrar na página inicial  
+**Para que** eu possa navegar facilmente e entender os serviços oferecidos  
+
+**Critérios de Aceitação:**
+- Página inicial exibe banner com informações sobre o cinema
+- Exibe uma seção destacada de "Filmes em Cartaz" com pôsteres em tamanho adequado
+- Layout responsivo que se adapta a diferentes tamanhos de tela
+- Links rápidos para principais áreas da aplicação
+- Acesso fácil à navegação principal através do cabeçalho
+- Usuários autenticados veem opções personalizadas no menu
 
 ### US-MOVIE-001: Navegar na Lista de Filmes
 **Como** usuário (visitante ou autenticado)  
@@ -59,8 +76,11 @@ Este documento contém histórias de usuário principais para a aplicação Cine
 **Para que** eu possa descobrir filmes para assistir  
 
 **Critérios de Aceitação:**
-- Usuário pode visualizar uma lista dos filmes em exibição
-- Filmes são exibidos com pôster, título e dados básicos
+- Usuário pode visualizar uma lista dos filmes em exibição com layout em grid
+- Filmes são exibidos com pôster grande e de alta qualidade
+- Cards de filmes mostram título, classificação e gêneros
+- Cards incluem duração do filme e data de lançamento
+- Sistema adapta o layout para diferentes tamanhos de tela (responsivo)
 - Usuário consegue acessar detalhes do filme com um clique
 
 ### US-MOVIE-002: Visualizar Detalhes do Filme
@@ -100,15 +120,18 @@ Este documento contém histórias de usuário principais para a aplicação Cine
 - Usuário não pode selecionar assentos já reservados
 - Sistema mostra o subtotal à medida que os assentos são selecionados
 
-### US-RESERVE-002: Completar Reserva
+### US-RESERVE-002: Processo de Checkout
 **Como** usuário logado  
-**Eu quero** confirmar minha seleção de assentos  
-**Para que** eu possa finalizar minha reserva  
+**Eu quero** finalizar o processo de compra dos ingressos  
+**Para que** eu possa garantir minha reserva  
 
 **Critérios de Aceitação:**
-- Usuário pode revisar assentos selecionados antes de confirmar
-- Sistema calcula o total correto com base nos tipos de assentos
-- Sistema confirma reserva bem-sucedida
+- Usuário é redirecionado para a página de checkout após selecionar os assentos
+- Página de checkout exibe resumo dos assentos selecionados
+- Usuário pode visualizar o valor total da compra
+- Usuário pode selecionar um método de pagamento (cartão de crédito, débito, PIX, transferência)
+- Sistema processa o pagamento (simulado) e confirma a reserva
+- Usuário recebe confirmação visual do sucesso da reserva
 - Assentos selecionados são marcados como ocupados
 
 ### US-RESERVE-003: Visualizar Minhas Reservas
@@ -117,21 +140,26 @@ Este documento contém histórias de usuário principais para a aplicação Cine
 **Para que** eu possa verificar minhas reservas  
 
 **Critérios de Aceitação:**
-- Usuário pode acessar lista de suas reservas
-- Reservas exibem filme, data, horário, teatro, assentos e status
-- Usuário pode visualizar detalhes completos de cada reserva
+- Usuário pode acessar lista de suas reservas através do link "Minhas Reservas" no menu
+- Reservas são exibidas em formato de card com informações visuais claras
+- Cada reserva exibe filme, data, horário, cinema, assentos, status e método de pagamento
+- Usuário pode visualizar o pôster do filme associado à reserva
+- Sistema exibe indicadores visuais de status da reserva (confirmada, pendente, cancelada)
+- Usuário pode acessar página dedicada de reservas separada das informações de perfil
 
-## Histórias de API e Sistema
+## Histórias de Experiência do Usuário
 
-### US-API-001: Autenticação da API
-**Como** desenvolvedor  
-**Eu quero** autenticar com a API  
-**Para que** eu possa acessar endpoints protegidos  
+### US-NAV-001: Navegação Intuitiva
+**Como** usuário da aplicação  
+**Eu quero** navegar facilmente entre as diferentes seções do site  
+**Para que** eu possa encontrar rapidamente as informações e funcionalidades que preciso  
 
 **Critérios de Aceitação:**
-- API fornece autenticação baseada em JWT
-- API impõe autorização adequada para rotas protegidas
-- Requisições com tokens inválidos são rejeitadas
-- API fornece endpoint seguro para login e obtenção de token
+- Cabeçalho está presente em todas as páginas com links para áreas principais
+- Menu é responsivo e se adapta a diferentes tamanhos de tela (versão móvel)
+- Usuário logado tem acesso à seções personalizadas como "Minhas Reservas" e "Perfil"
+- Breadcrumbs ou elementos de navegação indicam o caminho atual do usuário
+- Links diretos para retornar à página anterior quando apropriado
+- Feedback visual indica a página atual no menu de navegação
 
 ---
