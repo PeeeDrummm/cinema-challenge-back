@@ -116,11 +116,23 @@ const reservationSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Total price is required'],
     min: [0, 'Price cannot be negative']
-  },
-  status: {
+  },  status: {
     type: String,
     enum: ['pending', 'confirmed', 'cancelled'],
     default: 'pending'
+  },
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'completed', 'failed'],
+    default: 'pending'
+  },
+  paymentMethod: {
+    type: String,
+    enum: ['credit_card', 'debit_card', 'pix', 'bank_transfer'],
+    default: 'credit_card'
+  },
+  paymentDate: {
+    type: Date
   },
   createdAt: {
     type: Date,

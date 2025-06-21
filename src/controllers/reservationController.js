@@ -131,7 +131,7 @@ exports.getReservationById = async (req, res, next) => {
  */
 exports.createReservation = async (req, res, next) => {
   try {
-    const { session: sessionId, seats } = req.body;
+    const { session: sessionId, seats, paymentMethod = 'credit_card' } = req.body;
     
     // Check if session exists
     const session = await Session.findById(sessionId);
@@ -165,16 +165,19 @@ exports.createReservation = async (req, res, next) => {
     // Calculate total price
     let totalPrice = 0;
     for (const seat of seats) {
-      totalPrice += seat.type === 'full' ? session.fullPrice : session.halfPrice;
+      totalPrice += seat.type === 'half' ? session.halfPrice : session.fullPrice;
     }
     
-    // Create reservation
+    // Create reservation with payment details
     const reservation = await Reservation.create({
       user: req.user._id,
       session: sessionId,
       seats,
       totalPrice,
-      status: 'confirmed'
+      status: 'confirmed',
+      paymentStatus: 'completed', // Auto-complete payment for demo
+      paymentMethod: paymentMethod,
+      paymentDate: new Date()
     });
     
     // Update seat status in session
@@ -189,6 +192,15 @@ exports.createReservation = async (req, res, next) => {
     }
     
     await session.save();
+    
+    // Populate session and movie data for reservation response
+    await reservation.populate({
+      path: 'session',
+      populate: {
+        path: 'movie theater',
+        select: 'title name poster'
+      }
+    });
     
     res.status(201).json({
       success: true,
