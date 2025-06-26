@@ -8,7 +8,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Authentication
- *   description: API for user authentication
+ *   description: API for user authentication. Login and register are public, other endpoints require Bearer token.
  */
 
 /**
@@ -47,18 +47,36 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
- *                   type: string
- *                 name:
- *                   type: string
- *                 email:
- *                   type: string
- *                 token:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *                       example: "user"
+ *                     token:
+ *                       type: string
  *       400:
- *         description: Invalid input data
- *       409:
- *         description: User already exists
+ *         description: User already exists or invalid data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "User already exists"
  */
 router.post('/register', register);
 
@@ -94,18 +112,36 @@ router.post('/register', register);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
- *                   type: string
- *                 name:
- *                   type: string
- *                 email:
- *                   type: string
- *                 token:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *                       example: "user"
+ *                     token:
+ *                       type: string
  *       400:
  *         description: Invalid credentials
- *       404:
- *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid credentials"
  */
 router.post('/login', login);
 
@@ -115,8 +151,8 @@ router.post('/login', login);
  *   get:
  *     summary: Get current user profile
  *     tags: [Authentication]
- *     security:
- *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/AuthorizationHeader'
  *     responses:
  *       200:
  *         description: User profile data
@@ -125,16 +161,32 @@ router.post('/login', login);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
- *                   type: string
- *                 name:
- *                   type: string
- *                 email:
- *                   type: string
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
  *       401:
  *         description: Not authorized, no token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  *       403:
  *         description: Not authorized, invalid token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/me', protect, getProfile);
 
@@ -144,8 +196,8 @@ router.get('/me', protect, getProfile);
  *   put:
  *     summary: Update user profile
  *     tags: [Authentication]
- *     security:
- *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/AuthorizationHeader'
  *     requestBody:
  *       content:
  *         application/json:
@@ -166,6 +218,25 @@ router.get('/me', protect, getProfile);
  *     responses:
  *       200:
  *         description: Profile updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
  *       401:
  *         description: Current password is incorrect
  *       404:

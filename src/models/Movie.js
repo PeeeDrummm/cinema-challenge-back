@@ -18,6 +18,9 @@ const mongoose = require('mongoose');
  *         _id:
  *           type: string
  *           description: The auto-generated id of the movie
+ *         customId:
+ *           type: string
+ *           description: Custom identifier for the movie (optional)
  *         title:
  *           type: string
  *           description: The title of the movie

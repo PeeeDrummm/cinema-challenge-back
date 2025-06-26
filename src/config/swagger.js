@@ -25,13 +25,108 @@ const swaggerOptions = {
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
-          bearerFormat: 'JWT'
+          bearerFormat: 'JWT',
+          description: 'Enter JWT token in the format: Bearer <token>'
+        }
+      },
+      parameters: {
+        AuthorizationHeader: {
+          in: 'header',
+          name: 'Authorization',
+          required: true,
+          schema: {
+            type: 'string',
+            example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+          },
+          description: 'Bearer token for authentication'
+        }
+      },
+      schemas: {
+        Error: {
+          type: 'object',
+          properties: {
+            success: {
+              type: 'boolean',
+              example: false
+            },
+            error: {
+              type: 'string',
+              description: 'Error message'
+            }
+          }
+        },
+        ValidationError: {
+          type: 'object',
+          properties: {
+            success: {
+              type: 'boolean',
+              example: false
+            },
+            error: {
+              type: 'string',
+              description: 'Validation error message'
+            },
+            errors: {
+              type: 'object',
+              description: 'Field-specific validation errors'
+            }
+          }
+        }
+      },
+      responses: {
+        ValidationError: {
+          description: 'Validation Error',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ValidationError'
+              }
+            }
+          }
+        },
+        NotFound: {
+          description: 'Resource not found',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error'
+              }
+            }
+          }
+        },
+        Unauthorized: {
+          description: 'Authentication required',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error'
+              }
+            }
+          }
+        },
+        Forbidden: {
+          description: 'Insufficient permissions',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error'
+              }
+            }
+          }
+        },
+        InternalServerError: {
+          description: 'Internal server error',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error'
+              }
+            }
+          }
         }
       }
-    },
-    security: [{
-      bearerAuth: []
-    }]
+    }
+    // Remove global security - will be applied per route as needed
   },
   apis: [
     './src/routes/*.js',

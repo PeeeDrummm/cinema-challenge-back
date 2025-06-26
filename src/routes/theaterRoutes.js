@@ -14,7 +14,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Theaters
- *   description: API for managing theaters
+ *   description: API for managing theaters. Public endpoints for viewing theaters, admin endpoints require Bearer token.
  */
 
 /**
@@ -108,8 +108,8 @@ router.get('/:id', getTheaterById);
  *   post:
  *     summary: Create a new theater
  *     tags: [Theaters]
- *     security:
- *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/AuthorizationHeader'
  *     requestBody:
  *       required: true
  *       content:
@@ -156,9 +156,8 @@ router.post('/', protect, authorize('admin'), createTheater);
  *   put:
  *     summary: Update a theater
  *     tags: [Theaters]
- *     security:
- *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/AuthorizationHeader'
  *       - in: path
  *         name: id
  *         required: true
@@ -209,9 +208,8 @@ router.put('/:id', protect, authorize('admin'), updateTheater);
  *   delete:
  *     summary: Delete a theater
  *     tags: [Theaters]
- *     security:
- *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/AuthorizationHeader'
  *       - in: path
  *         name: id
  *         required: true

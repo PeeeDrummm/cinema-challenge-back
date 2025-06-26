@@ -57,6 +57,20 @@ const mongoose = require('mongoose');
  *           enum: [pending, confirmed, cancelled]
  *           default: pending
  *           description: Current status of the reservation
+ *         paymentStatus:
+ *           type: string
+ *           enum: [pending, completed, failed]
+ *           default: pending
+ *           description: Payment status
+ *         paymentMethod:
+ *           type: string
+ *           enum: [credit_card, debit_card, pix, bank_transfer]
+ *           default: credit_card
+ *           description: Payment method used
+ *         paymentDate:
+ *           type: string
+ *           format: date-time
+ *           description: Date when payment was completed (if applicable)
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -71,6 +85,9 @@ const mongoose = require('mongoose');
  *         ]
  *         totalPrice: 30
  *         status: "confirmed"
+ *         paymentStatus: "completed"
+ *         paymentMethod: "credit_card"
+ *         paymentDate: "2021-06-21T12:30:00.000Z"
  *         createdAt: "2021-06-21T12:00:00.000Z"
  */
 
