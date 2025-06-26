@@ -5,11 +5,57 @@ const movieRoutes = require('./movieRoutes');
 const theaterRoutes = require('./theaterRoutes');
 const sessionRoutes = require('./sessionRoutes');
 const reservationRoutes = require('./reservationRoutes');
+const setupRoutes = require('./setupRoutes');
 
 const router = express.Router();
 
 /**
- * Root API route - provides basic API information
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Get API information
+ *     tags: [API Info]
+ *     responses:
+ *       200:
+ *         description: API information and available endpoints
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Cinema App API v1"
+ *                 version:
+ *                   type: string
+ *                   example: "1.0.0"
+ *                 endpoints:
+ *                   type: object
+ *                   properties:
+ *                     auth:
+ *                       type: string
+ *                       example: "/auth"
+ *                     users:
+ *                       type: string
+ *                       example: "/users"
+ *                     movies:
+ *                       type: string
+ *                       example: "/movies"
+ *                     theaters:
+ *                       type: string
+ *                       example: "/theaters"
+ *                     sessions:
+ *                       type: string
+ *                       example: "/sessions"
+ *                     reservations:
+ *                       type: string
+ *                       example: "/reservations"
+ *                 documentation:
+ *                   type: string
+ *                   example: "/docs"
  */
 router.get('/', (req, res) => {
   res.json({
@@ -22,7 +68,8 @@ router.get('/', (req, res) => {
       movies: '/movies',
       theaters: '/theaters',
       sessions: '/sessions',
-      reservations: '/reservations'
+      reservations: '/reservations',
+      setup: '/setup (development only)'
     },
     documentation: '/docs'
   });
@@ -37,5 +84,6 @@ router.use('/movies', movieRoutes);
 router.use('/theaters', theaterRoutes);
 router.use('/sessions', sessionRoutes);
 router.use('/reservations', reservationRoutes);
+router.use('/setup', setupRoutes);
 
 module.exports = router;

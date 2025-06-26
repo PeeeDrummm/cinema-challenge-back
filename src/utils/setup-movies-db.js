@@ -1,13 +1,22 @@
 // Run this script to set up your database with proper movie data
 // that matches the frontend hardcoded IDs
 
-const connectDB = require('./src/config/db');
-const { Movie } = require('./src/models');
+const connectDB = require('../config/db');
+const { Movie } = require('../models');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const path = require('path');
 
-// Load environment variables
-dotenv.config();
+// Load environment variables from root directory
+dotenv.config({ path: path.join(__dirname, '../../.env') });
+
+// Verificar se a variável de ambiente foi carregada
+if (!process.env.MONGODB_URI) {
+  console.error('❌ MONGODB_URI não encontrada nas variáveis de ambiente!');
+  console.error('   Verifique se o arquivo .env existe na raiz do projeto.');
+  console.error('   Caminho procurado:', path.join(__dirname, '../../.env'));
+  process.exit(1);
+}
 
 // Sample movie data matching frontend IDs
 const sampleMovies = [

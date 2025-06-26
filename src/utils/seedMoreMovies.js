@@ -1,10 +1,19 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const path = require('path');
 const { Movie, Session, Theater } = require('../models');
 const connectDB = require('../config/db');
 
-// Load environment variables
-dotenv.config();
+// Load environment variables from root directory
+dotenv.config({ path: path.join(__dirname, '../../.env') });
+
+// Verificar se a variável de ambiente foi carregada
+if (!process.env.MONGODB_URI) {
+  console.error('❌ MONGODB_URI não encontrada nas variáveis de ambiente!');
+  console.error('   Verifique se o arquivo .env existe na raiz do projeto.');
+  console.error('   Caminho procurado:', path.join(__dirname, '../../.env'));
+  process.exit(1);
+}
 
 // Função para gerar assentos baseado na capacidade do teatro
 const generateSeats = (capacity) => {

@@ -14,7 +14,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Movies
- *   description: API for managing movies
+ *   description: API for managing movies. Public endpoints for viewing movies, admin endpoints require Bearer token.
  */
 
 /**
@@ -100,9 +100,41 @@ router.get('/', getMovies);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Movie'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Movie'
  *       404:
  *         description: Movie not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Movie not found"
+ *       400:
+ *         description: Invalid movie ID format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid movie ID format or movie not found"
+ *                 error:
+ *                   type: string
  */
 router.get('/:id', getMovieById);
 
@@ -112,8 +144,8 @@ router.get('/:id', getMovieById);
  *   post:
  *     summary: Create a new movie
  *     tags: [Movies]
- *     security:
- *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/AuthorizationHeader'
  *     requestBody:
  *       required: true
  *       content:
@@ -154,7 +186,13 @@ router.get('/:id', getMovieById);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Movie'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Movie'
  *       400:
  *         description: Invalid input data
  *       401:
@@ -170,9 +208,8 @@ router.post('/', protect, authorize('admin'), createMovie);
  *   put:
  *     summary: Update a movie
  *     tags: [Movies]
- *     security:
- *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/AuthorizationHeader'
  *       - in: path
  *         name: id
  *         required: true
@@ -211,7 +248,13 @@ router.post('/', protect, authorize('admin'), createMovie);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Movie'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Movie'
  *       400:
  *         description: Invalid input data
  *       401:
@@ -229,9 +272,8 @@ router.put('/:id', protect, authorize('admin'), updateMovie);
  *   delete:
  *     summary: Delete a movie
  *     tags: [Movies]
- *     security:
- *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/AuthorizationHeader'
  *       - in: path
  *         name: id
  *         required: true
@@ -241,6 +283,17 @@ router.put('/:id', protect, authorize('admin'), updateMovie);
  *     responses:
  *       200:
  *         description: Movie deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Movie removed"
  *       401:
  *         description: Not authorized
  *       403:
